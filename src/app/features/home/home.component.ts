@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import {TranslateModule} from "@ngx-translate/core";
-import { UserManagementComponent } from '../user-management/user-management.component';
+import { TranslateModule } from "@ngx-translate/core";
+import { UserManagementComponent } from '../uzivatel/user-management/user-management.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [TranslateModule,
+  imports: [
+    TranslateModule,
     UserManagementComponent
   ],
   templateUrl: './home.component.html',

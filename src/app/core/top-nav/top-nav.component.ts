@@ -17,12 +17,12 @@ export class TopNavComponent implements OnInit {
       {
         label: 'Uživateľ',
         icon: 'pi pi-user',
-
+        url: '/user'
       },
       {
         label: 'trasy',
         icon: 'pi pi-truck',
-
+        url: ''
       },
     ];
   }

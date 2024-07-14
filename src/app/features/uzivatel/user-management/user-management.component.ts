@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { User } from '../../shared/modules/user';
-import { UserTableComponent } from '../uzivatel/uzivatel.component';
+import { User } from '../../../shared/modules/user';
+import { UserTableComponent } from '../uzivatel.component';
 import { FormsModule } from "@angular/forms";
 
 @Component({

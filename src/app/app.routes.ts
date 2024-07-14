@@ -4,7 +4,7 @@ import {LayoutComponent} from "./core/layout/layout.component";
 export const routes: Routes = [
   // {
   //   path: 'login',
-  //   component: ,
+  //   component: LoginComponent,
   // },
   {
     path: '',
