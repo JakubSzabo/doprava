@@ -11,5 +11,5 @@ export const routes: Routes = [
     component: LayoutComponent,
     loadChildren: () => import('./features/features.routes')
   },
-  { path: '**', redirectTo: '/not-found' },
+  { path: '**', redirectTo: '' },
 ];
