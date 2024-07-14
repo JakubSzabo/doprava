@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="form">
+    <h2>Nový užívateľ</h2>
+    <label>Meno užívateľa</label>
+    <input [(ngModel)]="newUser.name" placeholder="Meno užívateľa" />
+
+    <label>Typ vozidla</label>
+    <input [(ngModel)]="newUser.vehicleType" placeholder="Typ vozidla" />
+
+    <label>ŠPZ</label>
+    <input [(ngModel)]="newUser.licensePlate" placeholder="ŠPZ" />
+
+    <label>Spotreba</label>
+
+    <input [(ngModel)]="newUser.consumption" type="number" placeholder="Spotreba" />
+
+    <label>Stav tachometra</label>
+    <input [(ngModel)]="newUser.odometer" type="number" placeholder="Stav tachometra" />
+
+    <label>Stav nádrže</label>
+    <input [(ngModel)]="newUser.tankStatus" type="number" placeholder="Stav nádrže" />
+
+    <button (click)="addUser()">Pridať užívateľa</button>
+  </div>
+
+  <app-user-table [users]="users"></app-user-table>
+</div>

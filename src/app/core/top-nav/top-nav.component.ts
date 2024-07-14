@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { triggerAsyncId } from 'async_hooks';
 import { MenubarModule } from 'primeng/menubar';
 
 @Component({
@@ -14,8 +15,14 @@ export class TopNavComponent implements OnInit {
   ngOnInit(): void {
     this.items = [
       {
-        lable: 'Uživateľ',
-        icon: 'pi-user',
+        label: 'Uživateľ',
+        icon: 'pi pi-user',
+
+      },
+      {
+        label: 'trasy',
+        icon: 'pi pi-truck',
+
       },
     ];
   }
