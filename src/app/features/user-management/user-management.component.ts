@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { User } from '../../shared/modules/user';
 import { UserTableComponent } from '../uzivatel/uzivatel.component';
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: 'app-user-management',
   templateUrl: './user-management.component.html',
-  imports: [UserTableComponent],
+  imports: [UserTableComponent, FormsModule],
   styleUrls: ['./user-management.component.scss'],
   standalone: true
 })
@@ -22,6 +23,7 @@ export class UserManagementComponent {
   };
 
   addUser() {
+    console.log("HERE")
     this.users.push({ ...this.newUser });
     this.newUser = {
       name: '',
@@ -31,5 +33,6 @@ export class UserManagementComponent {
       odometer: 0,
       tankStatus: 0,
     };
+    console.log(this.users)
   }
 }

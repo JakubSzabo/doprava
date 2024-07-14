@@ -10,13 +10,15 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users">
-      <td>{{ user.name }}</td>
-      <td>{{ user.vehicleType }}</td>
-      <td>{{ user.licensePlate }}</td>
-      <td>{{ user.consumption }}</td>
-      <td>{{ user.odometer }}</td>
-      <td>{{ user.tankStatus }}</td>
-    </tr>
+    @for (user of users; track user) {
+      <tr>
+        <td>{{ user.name }}</td>
+        <td>{{ user.vehicleType }}</td>
+        <td>{{ user.licensePlate }}</td>
+        <td>{{ user.consumption }}</td>
+        <td>{{ user.odometer }}</td>
+        <td>{{ user.tankStatus }}</td>
+      </tr>
+    }
   </tbody>
 </table>
