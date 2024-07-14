@@ -1,12 +1,11 @@
 import { Routes } from '@angular/router';
-import {TestComponent} from "./core/test/test.component";
 import {LayoutComponent} from "./core/layout/layout.component";
 
 export const routes: Routes = [
-  {
-    path: 'test',
-    component: TestComponent
-  },
+  // {
+  //   path: 'login',
+  //   component: ,
+  // },
   {
     path: '',
     component: LayoutComponent,
