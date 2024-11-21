@@ -1,5 +1,14 @@
 {
-  "nav": {
+  "NAV": {
     "user": "User"
+  },
+  "USER": {
+    "user": "User",
+    "fullName": "Name",
+    "vehicleType": "",
+    "registrationNumber": "",
+    "usage": "",
+    "speedometerStatus": "",
+    "tankCondition": ""
   }
 }

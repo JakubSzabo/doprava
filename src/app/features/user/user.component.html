@@ -1,0 +1,35 @@
+<div class="container">
+  <h1>
+    {{ 'USER.user' | translate }}
+    <i
+      (click)="add()"
+      class="pi pi-plus-circle font-l cursor-pointer">
+    </i>
+  </h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>{{ 'USER.fullName' | translate }}</th>
+        <th>{{ 'USER.vehicleType' | translate }}</th>
+        <th>{{ 'USER.licensePlate' | translate }}</th>
+        <th>{{ 'USER.consumption' | translate }}</th>
+        <th>{{ 'USER.odometer' | translate }}</th>
+        <th>{{ 'USER.tankStatus' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of users; track user) {
+        <tr>
+          <td>{{ user.firstName  + " " + user.lastName }}</td>
+          <td>{{ user.vehicleType }}</td>
+          <td>{{ user.licensePlate }}</td>
+          <td>{{ user.consumption }}</td>
+          <td>{{ user.odometer }}</td>
+          <td>{{ user.tankStatus }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+

@@ -1,5 +1,9 @@
 export interface User {
-  name: string;
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
   vehicleType: string;
   licensePlate: string;
   consumption: number;

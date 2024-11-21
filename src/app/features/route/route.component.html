@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="form">
+        <h1 class="font-xl">
+            {{ 'ROUTE.title' | translate }}
+            <i
+              (click)="add()"
+              class="pi pi-plus-circle font-l cursor-pointer">
+            </i>
+        </h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>{{ 'ROUTE.form.route' | translate }}</th>
+                    <th>{{ 'ROUTE.form.distance' | translate }}</th>
+                </tr>
+            </thead>
+            <tbody>
+              @for (route of routes; track route) {
+                  <tr>
+                        <td>{{ route.route }}</td>
+                        <td>{{ route.distance }} km</td>
+                  </tr>
+              }
+            </tbody>
+        </table>
+    </div>
+</div>

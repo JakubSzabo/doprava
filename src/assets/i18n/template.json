@@ -1,0 +1,30 @@
+{
+  "CORE": {
+    "confirm": ""
+  },
+  "NAV": {
+    "user": ""
+  },
+  "USER": {
+    "user": "",
+    "fullName": "",
+    "vehicleType": "",
+    "licensePlate": "",
+    "consumption": "",
+    "odometer": "",
+    "tankStatus": "",
+    "form": {
+      "add": "",
+      "edit": "",
+      "firstName": "",
+      "lastName": "",
+      "email": "",
+      "password": "",
+      "vehicleType": "",
+      "licensePlate": "",
+      "consumption": "",
+      "odometer": "",
+      "tankStatus": ""
+    }
+  }
+}

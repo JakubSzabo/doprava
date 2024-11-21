@@ -1,0 +1,15 @@
+input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  margin: 0.6rem 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+label {
+  margin-top: 10px;
+  display: block;
+  font-weight: bold;
+}

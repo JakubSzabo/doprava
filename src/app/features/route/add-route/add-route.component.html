@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="form">
+    <h2 class="font-xl">{{ "ROUTE.form.add" | translate }}</h2>
+
+    <label>{{ "ROUTE.form.route" | translate }}</label>
+    <input [(ngModel)]="route.route" placeholder="{{ 'ROUTE.form.route' | translate }}"/>
+
+    <label>{{ "ROUTE.form.distance" | translate }}</label>
+    <input [(ngModel)]="route.distance" placeholder="{{ 'ROUTE.form.distance' | translate }}"/>
+
+    <button
+      (click)="add()"
+      class="button button-success"
+    >
+      {{ "CORE.confirm" | translate }}
+    </button>
+  </div>
+</div>

@@ -1,5 +1,65 @@
 {
-  "nav": {
-    "user": "Uživatel"
+  "CORE": {
+    "confirm": "Potvrdiť",
+    "from": "Od",
+    "to": "Do",
+    "next": "Ďalej",
+    "back": "Späť"
+  },
+  "NAV": {
+    "user": "Uživatelia",
+    "route": "Trasy"
+  },
+  "USER": {
+    "user": "Uživatel",
+    "fullName": "Meno",
+    "vehicleType": "Typ vozidla",
+    "licensePlate": "ŠPZ",
+    "consumption": "Spotreba",
+    "odometer": "Stav tachometra",
+    "tankStatus": "Stav nádrže",
+    "form": {
+      "add": "Nový užívatel",
+      "edit": "Uživatel",
+      "firstName": "Meno",
+      "lastName": "Priezvisko",
+      "email": "Email",
+      "password": "Heslo",
+      "vehicleType": "Typ vozidla",
+      "licensePlate": "ŠPZ",
+      "consumption": "Spotreba",
+      "odometer": "Stav tachometra",
+      "tankStatus": "Stav nádrže"
+    }
+  },
+  "ROUTE": {
+    "title": "Trasy",
+    "form": {
+      "add": "Pridať trasu",
+      "route": "Trasa",
+      "distance": "Vzdialenosť"
+    }
+  },
+  "PHM": {
+    "title": "Pohonné hmoty",
+    "user": "Užívatel",
+    "period": "Zučtovacie obdobie",
+    "firstSection": "Užívatel a obdobie",
+    "refueling": "Tankovania",
+    "selectUser": "Výber užívatela",
+    "date": "Dátum",
+    "quantity": "Natankonvané (L)",
+    "price": "Cena (€)",
+    "payment_method": "Spôsob platby",
+    "selectPayment": "Spôsob platby",
+    "generate": "Generuj trasy",
+    "form": {
+      "title": "Služobná ceta",
+      "date": "Dátum",
+      "quantity": "Množstvo (L)",
+      "price": "Cena (€)",
+      "distance": "Vzdialenosť (Km)",
+      "route": "Trasa"
+    }
   }
 }

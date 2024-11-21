@@ -1,0 +1,26 @@
+.first-section {
+  display: flex;
+  justify-content: space-around;
+}
+
+.next {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.back-next {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+input {
+  width: 33%;
+}
+
+table {
+  max-height: 300px;
+  min-height: 300px;
+  overflow: auto;
+}
