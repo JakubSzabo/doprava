@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ucenie-filipa": {
+    "phm-app-fe": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/ucenie-filipa",
+            "outputPath": "dist/phm-app-fe",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -69,10 +69,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ucenie-filipa:build:production"
+              "buildTarget": "phm-app-fe:build:production"
             },
             "development": {
-              "buildTarget": "ucenie-filipa:build:development"
+              "buildTarget": "phm-app-fe:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +80,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "ucenie-filipa:build"
+            "buildTarget": "phm-app-fe:build"
           }
         },
         "test": {
