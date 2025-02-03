@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://your-production-api-url/api/v1'
+  apiUrl: 'https://phm-app-be-5ea6ca5e0a1d.herokuapp.com'
 };
