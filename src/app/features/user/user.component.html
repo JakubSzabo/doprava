@@ -16,6 +16,7 @@
         <th>{{ 'USER.consumption' | translate }}</th>
         <th>{{ 'USER.odometer' | translate }}</th>
         <th>{{ 'USER.tankStatus' | translate }}</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -27,6 +28,10 @@
           <td>{{ user.consumption }}</td>
           <td>{{ user.odometer }}</td>
           <td>{{ user.tankStatus }}</td>
+          <td class="d-flex justify-content-center">
+            <i class="pi pi-pencil cursor-pointer" (click)="edit(user.id)"></i>
+            <i class="pi pi-trash pl-3 cursor-pointer" (click)="delete(user.id)"></i>
+          </td>
         </tr>
       }
     </tbody>

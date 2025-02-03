@@ -20,6 +20,7 @@ export class AddRouteComponent {
   ) {}
 
   add() {
+    if (this.route.route == undefined || this.route.distance == undefined) return;
     this.dialogRef.close(this.route);
   }
 }

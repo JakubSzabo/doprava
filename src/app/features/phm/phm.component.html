@@ -37,6 +37,7 @@
               label="{{ 'CORE.next' | translate }}"
               icon="pi pi-arrow-right"
               iconPos="right"
+              [disabled]="!isNextEnabled()"
               (onClick)="nextCallback.emit()" />
           </div>
         </ng-template>
@@ -44,6 +45,10 @@
       <p-stepperPanel header="{{ 'PHM.refueling' | translate }}">
         <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
           <div class="flex flex-column h-12rem">
+
+            <label>{{ "PHM.form.traveledDistance" | translate }}</label>
+            <input type="number" [(ngModel)]="distance" />
+
             <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
               <table>
                 <thead>
@@ -60,7 +65,7 @@
                       <td>{{ refuel.date | date:'dd.MM.yyyy'}}</td>
                       <td>{{ refuel.quantity }} L</td>
                       <td>{{ refuel.price }} €</td>
-                      <td>{{ refuel.paymentMethod }}</td>
+                      <td>{{ 'PHM.' + refuel.paymentMethod | translate }}</td>
                     </tr>
                   }
                 </tbody>
@@ -72,8 +77,8 @@
                     [(ngModel)]="date"
                     dateFormat="dd.mm.yy"
                   />
-                  <input class="mr-3 ml-3" [(ngModel)]="quantity" placeholder="{{ 'PHM.form.quantity' | translate }}"/>
-                  <input class="mr-3 ml-3" [(ngModel)]="price" placeholder="{{ 'PHM.form.price' | translate }}"/>
+                  <input class="mr-3 ml-3" type="number" [(ngModel)]="quantity" placeholder="{{ 'PHM.form.quantity' | translate }}"/>
+                  <input class="mr-3 ml-3" type="number" [(ngModel)]="price" placeholder="{{ 'PHM.form.price' | translate }}"/>
                   <p-dropdown
                     [options]="paymentMethod"
                     [(ngModel)]="selectedPayment"
@@ -84,12 +89,12 @@
                 </div>
 
                 <div class="d-flex justify-content-center">
-                  <button
+                  <p-button
+                    [disabled]="enabledRefueling()"
                     (click)="addRefueling()"
-                    class="button button-success"
                   >
                     {{ "CORE.confirm" | translate }}
-                  </button>
+                  </p-button>
                 </div>
               </div>
             </div>
@@ -100,70 +105,9 @@
               icon="pi pi-arrow-left"
               (onClick)="prevCallback.emit()" />
             <p-button
-              label="{{ 'CORE.next' | translate }}"
-              icon="pi pi-arrow-right"
-              iconPos="right"
-              (onClick)="nextCallback.emit()" />
-          </div>
-        </ng-template>
-      </p-stepperPanel>
-      <p-stepperPanel header="{{ 'PHM.form.title' | translate }}">
-        <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
-          <div class="flex flex-column h-12rem">
-            <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-              <div class="flex flex-column h-12rem">
-                <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
-                  <table>
-                    <thead>
-                    <tr>
-                      <th>{{ 'PHM.form.date' | translate }}</th>
-                      <th>{{ 'PHM.form.route' | translate }}</th>
-                      <th>{{ 'PHM.form.distance' | translate }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                      @for (trip of businessTrip; track trip) {
-                        <tr>
-                          <td>{{ trip.date | date:'dd.MM.yyyy'}}</td>
-                          <td>{{ trip.route }}</td>
-                          <td>{{ trip.distance }} km</td>
-                        </tr>
-                      }
-                    </tbody>
-                  </table>
-                  <h3 class="font-m">{{ "PHM.form.title" | translate }}</h3>
-                  <div class="form">
-                    <div class="d-flex justify-content-evenly">
-                      <p-calendar
-                        [(ngModel)]="dateBusinessTrip"
-                        dateFormat="dd.mm.yy"
-                      />
-                      <input class="mr-3 ml-3" [(ngModel)]="routeBusinessTrip" placeholder="{{ 'PHM.form.route' | translate }}"/>
-                      <input class="mr-3 ml-3" [(ngModel)]="distanceBusinessTrip" placeholder="{{ 'PHM.form.distance' | translate }}"/>
-                    </div>
-
-                    <div class="d-flex justify-content-center">
-                      <button
-                        (click)="addBusinessTrip()"
-                        class="button button-success"
-                      >
-                        {{ "CORE.confirm" | translate }}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="flex pt-4 back-next">
-            <p-button
-              label="{{ 'CORE.back' | translate }}"
-              icon="pi pi-arrow-left"
-              (onClick)="prevCallback.emit()" />
-
-            <p-button
               label="{{ 'PHM.generate' | translate }}"
               icon="pi pi-calculator"
+              [disabled]="!isGenerateEnabled()"
               (onClick)="generate()" />
           </div>
         </ng-template>

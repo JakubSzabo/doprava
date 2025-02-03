@@ -53,13 +53,18 @@
     "payment_method": "Spôsob platby",
     "selectPayment": "Spôsob platby",
     "generate": "Generuj trasy",
+    "card": "Karta",
+    "CARD": "Karta",
+    "cash": "Hotovosť",
+    "CASH": "Hotovosť",
     "form": {
       "title": "Služobná ceta",
       "date": "Dátum",
       "quantity": "Množstvo (L)",
       "price": "Cena (€)",
       "distance": "Vzdialenosť (Km)",
-      "route": "Trasa"
+      "route": "Trasa",
+      "traveledDistance": "Prejdená vzdialenosť"
     }
   }
 }

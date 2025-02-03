@@ -28,7 +28,6 @@ export class UserTableComponent implements OnInit{
 
   private getAllUsers() {
     this.userService.getAllUsers().subscribe(res => {
-      console.log(res);
       this.users = res;
     })
   }
@@ -43,10 +42,39 @@ export class UserTableComponent implements OnInit{
     );
 
     dialogRef.afterClosed().subscribe(result => {
-      this.userService.createUser(result).subscribe(res => {
-        console.log(res);
-        this.getAllUsers();
-      });
+      if (result) {
+        this.userService.createUser(result).subscribe(res => {
+          this.getAllUsers();
+        });
+      }
+    })
+  }
+
+  edit(id: string) {
+    this.userService.getUserById(id).subscribe(user => {
+      console.log(user)
+      const dialogRef = this.dialog.open(
+        UserManagementComponent,
+        {
+          data: {user: user},
+          height: '80%'
+        }
+      );
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.userService.updateUser(id, result).subscribe(res => {
+            this.getAllUsers();
+          });
+        }
+      })
+    })
+  }
+
+  delete(id?: string) {
+    if(!id) return;
+    this.userService.deleteUser(id).subscribe(_ => {
+      this.getAllUsers();
     })
   }
 }

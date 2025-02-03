@@ -30,7 +30,7 @@ export class UserService {
 
   updateUser(id: string, body: User): Observable<User> {
     const url = `${this.contactsUrl}/${id}`;
-    return this.http.post<User>(url, body).pipe();
+    return this.http.put<User>(url, body).pipe();
   }
 
   deleteUser(id: string): Observable<User> {

@@ -13,13 +13,17 @@
                 <tr>
                     <th>{{ 'ROUTE.form.route' | translate }}</th>
                     <th>{{ 'ROUTE.form.distance' | translate }}</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
               @for (route of routes; track route) {
                   <tr>
-                        <td>{{ route.route }}</td>
-                        <td>{{ route.distance }} km</td>
+                    <td>{{ route.route }}</td>
+                    <td>{{ route.distance }} km</td>
+                    <td class="d-flex justify-content-center">
+                      <i class="pi pi-trash pl-3 cursor-pointer" (click)="delete(route.id)"></i>
+                    </td>
                   </tr>
               }
             </tbody>
