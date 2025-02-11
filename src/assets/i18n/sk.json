@@ -4,23 +4,33 @@
     "from": "Od",
     "to": "Do",
     "next": "Ďalej",
-    "back": "Späť"
+    "back": "Späť",
+    "error": "Chyba"
   },
   "NAV": {
-    "user": "Uživatelia",
+    "user": "Zamestnanec",
     "route": "Trasy"
   },
-  "USER": {
-    "user": "Uživatel",
+  "LOGIN": {
+    "error": "Zlé prihlasovacie meno alebo heslo",
+    "form": {
+      "name": "Prihlasovacie meno",
+      "password": "Heslo",
+      "submit": "Prihlásiť sa"
+    }
+  },
+  "EMPLOYEE": {
+    "title": "Zamestnanec",
     "fullName": "Meno",
     "vehicleType": "Typ vozidla",
     "licensePlate": "ŠPZ",
     "consumption": "Spotreba",
     "odometer": "Stav tachometra",
     "tankStatus": "Stav nádrže",
+    "search": "Vyhladávať podla mena",
     "form": {
-      "add": "Nový užívatel",
-      "edit": "Uživatel",
+      "add": "Nový Zamestnanec",
+      "edit": "Zamestnanec",
       "firstName": "Meno",
       "lastName": "Priezvisko",
       "email": "Email",
@@ -34,6 +44,7 @@
   },
   "ROUTE": {
     "title": "Trasy",
+    "search": "Vyhladávať",
     "form": {
       "add": "Pridať trasu",
       "route": "Trasa",

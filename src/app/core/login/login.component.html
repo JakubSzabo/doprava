@@ -1,0 +1,18 @@
+<p-toast />
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="login-container">
+    <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <label for="name">{{ 'LOGIN.form.name' | translate }}</label>
+      <input type="text" id="name" name="name" [(ngModel)]="login" required />
+
+      <label for="password">{{ 'LOGIN.form.password' | translate }}</label>
+      <input type="password" id="password" name="password" [(ngModel)]="password" required />
+
+      <div class="d-flex justify-content-center p-3">
+        <button class="button button-success" type="submit" [disabled]="loginForm.invalid">
+          {{ 'LOGIN.form.submit' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

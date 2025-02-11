@@ -1,19 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {TranslateModule, TranslateService} from "@ngx-translate/core";
-import {DropdownModule} from "primeng/dropdown";
-import {FormsModule} from "@angular/forms";
-import {Select} from "../../shared/modules/core";
-import {Refuel} from "../../shared/modules/refuel";
-import {StepperModule} from "primeng/stepper";
-import {Button} from "primeng/button";
-import {CalendarModule} from "primeng/calendar";
-import {DatePipe} from "@angular/common";
-import {BusinessTrip} from "../../shared/modules/route";
-import {PhmService} from "./phm.service";
+import { Component, OnInit } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { Select } from '../../shared/modules/core';
+import { Refuel } from '../../shared/modules/refuel';
+import { StepperModule } from 'primeng/stepper';
+import { Button } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { DatePipe } from '@angular/common';
+import { BusinessTrip } from '../../shared/modules/route';
+import { PhmService } from './phm.service';
 import { jsPDF } from 'jspdf';
 import { ROBOTO_FONT_BASE64 } from '../../../assets/fonts/roboto-font';
 import { ROBOTO_FONT_BOLD_BASE64 } from '../../../assets/fonts/roboto-font-bold';
-import autoTable from "jspdf-autotable";
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-phm',
@@ -26,7 +26,7 @@ import autoTable from "jspdf-autotable";
     StepperModule,
     Button,
     CalendarModule,
-    DatePipe
+    DatePipe,
   ],
   templateUrl: './phm.component.html',
 })
@@ -45,8 +45,8 @@ export class PhmComponent implements OnInit {
   price?: number;
 
   paymentMethod: Select[] = [
-    { name: this.translate.instant('PHM.card'), code: "CARD" },
-    { name: this.translate.instant('PHM.cash'), code: "CASH" }
+    { name: this.translate.instant('PHM.card'), code: 'CARD' },
+    { name: this.translate.instant('PHM.cash'), code: 'CASH' },
   ];
   selectedPayment?: Select;
 
@@ -58,13 +58,12 @@ export class PhmComponent implements OnInit {
   constructor(
     private phmService: PhmService,
     private translate: TranslateService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
-    this.phmService.getAllUsers().subscribe(res => {
+    this.phmService.getAllUsers().subscribe((res) => {
       this.users = res;
-    })
+    });
   }
 
   addRefueling() {
@@ -72,29 +71,29 @@ export class PhmComponent implements OnInit {
       date: this.date,
       price: this.price,
       quantity: this.quantity,
-      paymentMethod: this.selectedPayment?.code
-    })
+      paymentMethod: this.selectedPayment?.code,
+    });
   }
 
   addBusinessTrip() {
     this.businessTrip.push({
       date: this.dateBusinessTrip,
       route: this.routeBusinessTrip,
-      distance: this.distanceBusinessTrip
-    })
+      distance: this.distanceBusinessTrip,
+    });
   }
 
   private calculateTotals() {
     const totals = {
       card: { distance: 0, quantity: 0 },
-      cash: { distance: 0, quantity: 0 }
+      cash: { distance: 0, quantity: 0 },
     };
 
-    this.refueling.forEach(refuel => {
-      if (refuel.paymentMethod === "CARD") {
+    this.refueling.forEach((refuel) => {
+      if (refuel.paymentMethod === 'CARD') {
         totals.card.distance += Number(refuel.price!);
         totals.card.quantity += Number(refuel.quantity!);
-      } else if (refuel.paymentMethod === "CASH") {
+      } else if (refuel.paymentMethod === 'CASH') {
         totals.cash.distance += Number(refuel.price!);
         totals.cash.quantity += Number(refuel.quantity!);
       }
@@ -103,40 +102,35 @@ export class PhmComponent implements OnInit {
     return totals;
   }
 
-  private countPaymentMethods(): { card: number, cash: number } {
-    return this.refueling.reduce((acc, refuel) => {
-      if (refuel.paymentMethod === "CARD") {
-        acc.card += 1;
-      } else if (refuel.paymentMethod === "CASH") {
-        acc.cash += 1;
-      }
-      return acc;
-    }, { card: 0, cash: 0 });
+  private countPaymentMethods(): { card: number; cash: number } {
+    return this.refueling.reduce(
+      (acc, refuel) => {
+        if (refuel.paymentMethod === 'CARD') {
+          acc.card += 1;
+        } else if (refuel.paymentMethod === 'CASH') {
+          acc.cash += 1;
+        }
+        return acc;
+      },
+      { card: 0, cash: 0 }
+    );
   }
 
   generate() {
-    this.phmService.getUserById(this.selectedUser?.code ?? "").subscribe(user => {
+    this.phmService.getUserById(this.selectedUser?.code ?? '').subscribe((user) => {
       const doc = new jsPDF('p', 'pt', 'a4');
-      doc.addFileToVFS("Roboto.ttf", ROBOTO_FONT_BASE64);
-      doc.addFileToVFS("Roboto-bold.ttf", ROBOTO_FONT_BOLD_BASE64);
-      doc.addFont("Roboto.ttf", "Roboto", "normal");
-      doc.addFont("Roboto-bold.ttf", "Roboto", "bold");
+      doc.addFileToVFS('Roboto.ttf', ROBOTO_FONT_BASE64);
+      doc.addFileToVFS('Roboto-bold.ttf', ROBOTO_FONT_BOLD_BASE64);
+      doc.addFont('Roboto.ttf', 'Roboto', 'normal');
+      doc.addFont('Roboto-bold.ttf', 'Roboto', 'bold');
 
-      doc.setFont("Roboto", "bold");
+      doc.setFont('Roboto', 'bold');
       doc.setFontSize(12);
 
-      doc.text(
-        'Vinárkse závody Topoľčianky, s.r.o., Cintorínska 31, 951 93 Topoľčianky',
-        50,
-        50
-      );
-      doc.text(
-        'VYÚČTOVANIE SPOTREBY POHONNÝCH HMOT (benzín, nafta)',
-        50,
-        70
-      );
+      doc.text('Vinárkse závody Topoľčianky, s.r.o., Cintorínska 31, 951 93 Topoľčianky', 50, 50);
+      doc.text('VYÚČTOVANIE SPOTREBY POHONNÝCH HMOT (benzín, nafta)', 50, 70);
 
-      doc.setFont("Roboto", "normal");
+      doc.setFont('Roboto', 'normal');
       doc.setFontSize(10);
 
       const driver = `Účtovateľ vozidla: ${this.selectedUser?.name}`;
@@ -153,7 +147,7 @@ export class PhmComponent implements OnInit {
 
       const odometer = `Normovaná spotreba na 100km: ${user.consumption}l/100Km`;
       const from = `${this.from?.getDate()}.${(this.from?.getMonth() ?? 0) + 1}.${this.from?.getFullYear()}`;
-      const to = `${this.to?.getDate()}.${(this.to?.getMonth() ?? 0 ) + 1}.${this.to?.getFullYear()}`;
+      const to = `${this.to?.getDate()}.${(this.to?.getMonth() ?? 0) + 1}.${this.to?.getFullYear()}`;
       const fromTo = `Vyúċtovanie spotreby za obdobie od: ${from}      do: ${to}`;
 
       doc.text(odometer, 50, 150);
@@ -205,15 +199,17 @@ export class PhmComponent implements OnInit {
       doc.text('výdajy zo skladu:', 125, 465);
       doc.text('0ks', 320, 465);
 
-      doc.setFont("Roboto", "bold");
+      doc.setFont('Roboto', 'bold');
       doc.text('Nákup pohonných hmôt za účtovné obdobie', 50, 490);
 
-      const tableData = this.refueling.map(refuel => ([
+      const tableData = this.refueling.map((refuel) => [
         refuel.date ? refuel.date.toLocaleDateString('sk-SK') : '',
         refuel.quantity ?? '',
         refuel.price ?? '',
-        refuel.paymentMethod === "CARD" ? this.translate.instant('PHM.card') : this.translate.instant('PHM.cash')
-      ]));
+        refuel.paymentMethod === 'CARD'
+          ? this.translate.instant('PHM.card')
+          : this.translate.instant('PHM.cash'),
+      ]);
 
       autoTable(doc, {
         startY: 500,
@@ -221,23 +217,23 @@ export class PhmComponent implements OnInit {
         body: tableData as (string | number)[][],
         theme: 'grid',
         styles: {
-          font: "Roboto",
+          font: 'Roboto',
           fontSize: 10,
           textColor: [0, 0, 0],
           lineWidth: 0.5,
-          lineColor: [0, 0, 0]
+          lineColor: [0, 0, 0],
         },
         headStyles: {
           fillColor: false,
           textColor: [0, 0, 0],
           lineWidth: 0.5,
-          lineColor: [0, 0, 0]
+          lineColor: [0, 0, 0],
         },
         tableLineColor: [0, 0, 0],
-        tableLineWidth: 0.5
+        tableLineWidth: 0.5,
       });
 
-      doc.setFont("Roboto", "normal");
+      doc.setFont('Roboto', 'normal');
       doc.text('Schválil: ................', 50, 770);
       doc.text('Predložil: ................', 225, 770);
       doc.text('Podpis účtovnika: ................', 400, 770);
@@ -246,13 +242,13 @@ export class PhmComponent implements OnInit {
 
       doc.addPage();
 
-      doc.setFont("Roboto", "bold");
+      doc.setFont('Roboto', 'bold');
       doc.text('Záznamy o prevádzke vozidla', 50, 50);
 
-      doc.setFont("Roboto", "normal");
+      doc.setFont('Roboto', 'normal');
       doc.text(`Vodič: ${this.selectedUser?.name}`, 50, 70);
 
-      this.phmService.getAllRoute().subscribe(routes => {
+      this.phmService.getAllRoute().subscribe((routes) => {
         let currentDate = new Date(this.from!);
         const endDate = new Date(this.to!);
         const workDays: Date[] = [];
@@ -286,7 +282,7 @@ export class PhmComponent implements OnInit {
             '08:00',
             '16:00',
             odometer,
-            selectedRoute.distance
+            selectedRoute.distance,
           ]);
 
           odometer += Number(selectedRoute.distance);
@@ -298,17 +294,17 @@ export class PhmComponent implements OnInit {
         if (totalDistance < this.distance) {
           const missingDistance = this.distance - totalDistance;
 
-          const exactMatchRoute = routes.find(route => route.distance === missingDistance);
+          const exactMatchRoute = routes.find((route) => route.distance === missingDistance);
 
           if (exactMatchRoute) {
             tableRouteData.pop();
             tableRouteData.push([
-              workDays.length > 0 ? workDays.shift()!.toLocaleDateString('sk-SK') : "N/A",
+              workDays.length > 0 ? workDays.shift()!.toLocaleDateString('sk-SK') : 'N/A',
               exactMatchRoute.route,
               '08:00',
               '16:00',
               odometer,
-              exactMatchRoute.distance
+              exactMatchRoute.distance,
             ]);
             totalDistance = this.distance;
           } else {
@@ -317,21 +313,21 @@ export class PhmComponent implements OnInit {
                 if (routes[i].distance + routes[j].distance === missingDistance) {
                   tableRouteData.pop();
                   tableRouteData.push([
-                    workDays.length > 0 ? workDays.shift()!.toLocaleDateString('sk-SK') : "N/A",
+                    workDays.length > 0 ? workDays.shift()!.toLocaleDateString('sk-SK') : 'N/A',
                     routes[i].route,
                     '08:00',
                     '16:00',
                     odometer,
-                    routes[i].distance
+                    routes[i].distance,
                   ]);
                   odometer += routes[i].distance;
                   tableRouteData.push([
-                    workDays.length > 0 ? workDays.shift()!.toLocaleDateString('sk-SK') : "N/A",
+                    workDays.length > 0 ? workDays.shift()!.toLocaleDateString('sk-SK') : 'N/A',
                     routes[j].route,
                     '08:00',
                     '16:00',
                     odometer,
-                    routes[j].distance
+                    routes[j].distance,
                   ]);
                   totalDistance = this.distance;
                   break;
@@ -342,7 +338,7 @@ export class PhmComponent implements OnInit {
           }
         }
 
-        tableRouteData.push(["Spolu", "", "", "", "", totalDistance]);
+        tableRouteData.push(['Spolu', '', '', '', '', totalDistance]);
 
         autoTable(doc, {
           startY: 85,
@@ -350,20 +346,20 @@ export class PhmComponent implements OnInit {
           body: tableRouteData,
           theme: 'grid',
           styles: {
-            font: "Roboto",
+            font: 'Roboto',
             fontSize: 10,
             textColor: [0, 0, 0],
             lineWidth: 0.5,
-            lineColor: [0, 0, 0]
+            lineColor: [0, 0, 0],
           },
           headStyles: {
             fillColor: false,
             textColor: [0, 0, 0],
             lineWidth: 0.5,
-            lineColor: [0, 0, 0]
+            lineColor: [0, 0, 0],
           },
           tableLineColor: [0, 0, 0],
-          tableLineWidth: 0.5
+          tableLineWidth: 0.5,
         });
 
         doc.text('V Topoľčiankach, dňa: ', 50, 770);
@@ -372,12 +368,11 @@ export class PhmComponent implements OnInit {
 
         doc.save('vygenerovany-dokument.pdf');
       });
-    })
+    });
   }
 
   isNextEnabled() {
     return this.selectedUser && this.from && this.to;
-
   }
 
   isGenerateEnabled() {

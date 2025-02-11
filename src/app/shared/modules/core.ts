@@ -1,4 +1,4 @@
 export interface Select {
-  name: string
-  code: string
+  name: string;
+  code: string;
 }

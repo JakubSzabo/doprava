@@ -14,10 +14,15 @@
 }
 
 .button-success {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
 }
 
 .button-success:hover {
   background-color: #45a049;
+}
+
+.button-success:disabled {
+  background-color: #9cd59c;
+  cursor: not-allowed;
 }

@@ -1,0 +1,54 @@
+<div class="container">
+  <div class="form">
+    <h2 class="font-xl">
+      {{ employee.id ? ('EMPLOYEE.form.edit' | translate) : ('EMPLOYEE.form.add' | translate) }}
+    </h2>
+
+    <label>{{ 'EMPLOYEE.form.firstName' | translate }}</label>
+    <input [(ngModel)]="employee.firstName" placeholder="{{ 'EMPLOYEE.form.firstName' | translate }}" />
+
+    <label>{{ 'EMPLOYEE.form.lastName' | translate }}</label>
+    <input [(ngModel)]="employee.lastName" placeholder="{{ 'EMPLOYEE.form.lastName' | translate }}" />
+
+    <label>{{ 'EMPLOYEE.form.email' | translate }}</label>
+    <input
+      type="email"
+      [(ngModel)]="employee.email"
+      placeholder="{{ 'EMPLOYEE.form.email' | translate }}"
+    />
+
+    <label>{{ 'EMPLOYEE.form.vehicleType' | translate }}</label>
+    <input [(ngModel)]="employee.vehicleType" placeholder="{{ 'EMPLOYEE.form.vehicleType' | translate }}" />
+
+    <label>{{ 'EMPLOYEE.form.licensePlate' | translate }}</label>
+    <input
+      [(ngModel)]="employee.licensePlate"
+      placeholder="{{ 'EMPLOYEE.form.licensePlate' | translate }}"
+    />
+
+    <label>{{ 'EMPLOYEE.form.consumption' | translate }}</label>
+    <input
+      [(ngModel)]="employee.consumption"
+      type="number"
+      placeholder="{{ 'EMPLOYEE.form.consumption' | translate }}"
+    />
+
+    <label>{{ 'EMPLOYEE.form.odometer' | translate }}</label>
+    <input
+      [(ngModel)]="employee.odometer"
+      type="number"
+      placeholder="{{ 'EMPLOYEE.form.odometer' | translate }}"
+    />
+
+    <label>{{ 'EMPLOYEE.form.tankStatus' | translate }}</label>
+    <input
+      [(ngModel)]="employee.tankStatus"
+      type="number"
+      placeholder="{{ 'EMPLOYEE.form.tankStatus' | translate }}"
+    />
+
+    <button (click)="add()" class="button button-success">
+      {{ 'CORE.confirm' | translate }}
+    </button>
+  </div>
+</div>

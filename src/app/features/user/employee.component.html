@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="form mt-5">
+    <h1 class="font-xl">
+      {{ 'EMPLOYEE.title' | translate }}
+      <i (click)="add()" class="pi pi-plus-circle font-l cursor-pointer"></i>
+    </h1>
+
+    <div class="mb-3">
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input type="text" style="padding-left: 32px" pInputText placeholder="{{ 'ROUTE.search' | translate }}" [(ngModel)]="searchTerm" (input)="filterUsers()" />
+      </span>
+    </div>
+
+    <p-table
+      [value]="filteredEmployees"
+      [paginator]="true"
+      [rows]="50"
+      [rowsPerPageOptions]="[50, 100, 150]"
+      [globalFilterFields]="['fullName', 'vehicleType', 'licensePlate', 'consumption', 'odometer', 'tankStatus']"
+      [responsiveLayout]="'scroll'"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="fullName">
+            {{ 'EMPLOYEE.fullName' | translate }}
+            <p-sortIcon field="fullName"></p-sortIcon>
+          </th>
+          <th pSortableColumn="vehicleType">
+            {{ 'EMPLOYEE.vehicleType' | translate }}
+            <p-sortIcon field="vehicleType"></p-sortIcon>
+          </th>
+          <th pSortableColumn="licensePlate">
+            {{ 'EMPLOYEE.licensePlate' | translate }}
+            <p-sortIcon field="licensePlate"></p-sortIcon>
+          </th>
+          <th pSortableColumn="consumption">
+            {{ 'EMPLOYEE.consumption' | translate }}
+            <p-sortIcon field="consumption"></p-sortIcon>
+          </th>
+          <th pSortableColumn="odometer">
+            {{ 'EMPLOYEE.odometer' | translate }}
+            <p-sortIcon field="odometer"></p-sortIcon>
+          </th>
+          <th pSortableColumn="tankStatus">
+            {{ 'EMPLOYEE.tankStatus' | translate }}
+            <p-sortIcon field="tankStatus"></p-sortIcon>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-employee>
+        <tr>
+          <td>{{ employee.firstName  + " " + employee.lastName }}</td>
+          <td>{{ employee.vehicleType }}</td>
+          <td>{{ employee.licensePlate }}</td>
+          <td>{{ employee.consumption }}</td>
+          <td>{{ employee.odometer }}</td>
+          <td>{{ employee.tankStatus }}</td>
+          <td class="d-flex justify-content-center">
+            <i class="pi pi-pencil cursor-pointer" (click)="edit(employee.id)"></i>
+            <i class="pi pi-trash pl-3 cursor-pointer" (click)="delete(employee.id)"></i>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
