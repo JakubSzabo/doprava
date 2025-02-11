@@ -1,32 +1,27 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../enviroments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Select } from '../../shared/modules/core';
 import { Employee } from '../../shared/modules/employee';
 import { Route } from '../../shared/modules/route';
+import { EMPLOYEE_API, ROUTE_API } from '../../shared/api/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PhmService {
-  protected readonly apiUrl = environment.apiUrl;
-  protected readonly userUrl = `${this.apiUrl}/api/v1/user`;
-  protected readonly routeUrl = `${this.apiUrl}/api/v1/route`;
-
   constructor(private http: HttpClient) {}
 
   getAllUsers(): Observable<Select[]> {
-    const url = `${this.userUrl}/options`;
-    return this.http.get<Select[]>(url).pipe();
+    return this.http.get<Select[]>(EMPLOYEE_API).pipe();
   }
 
   getUserById(id: string): Observable<Employee> {
-    const url = `${this.userUrl}/${id}`;
+    const url = `${EMPLOYEE_API}/${id}`;
     return this.http.get<Employee>(url).pipe();
   }
 
   getAllRoute(): Observable<Route[]> {
-    return this.http.get<Route[]>(this.routeUrl).pipe();
+    return this.http.get<Route[]>(ROUTE_API).pipe();
   }
 }
