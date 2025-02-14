@@ -13,7 +13,7 @@ export class PhmService {
   constructor(private http: HttpClient) {}
 
   getAllUsers(): Observable<Select[]> {
-    return this.http.get<Select[]>(EMPLOYEE_API).pipe();
+    return this.http.get<Select[]>(EMPLOYEE_API + '/options').pipe();
   }
 
   getUserById(id: string): Observable<Employee> {

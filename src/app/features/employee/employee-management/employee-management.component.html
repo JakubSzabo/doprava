@@ -47,8 +47,8 @@
       placeholder="{{ 'EMPLOYEE.form.tankStatus' | translate }}"
     />
 
-    <button (click)="add()" class="button button-success">
+    <p-button (click)="add()" [disabled]="checkEmployee()">
       {{ 'CORE.confirm' | translate }}
-    </button>
+    </p-button>
   </div>
 </div>

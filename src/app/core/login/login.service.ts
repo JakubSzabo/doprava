@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../enviroments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../../shared/modules/user';
@@ -13,7 +12,7 @@ export class LoginService {
   constructor(private http: HttpClient) {}
 
   try(): Observable<boolean> {
-    return this.http.get<boolean>(LOGIN_API).pipe();
+    return this.http.get<boolean>(LOGIN_API + '/try').pipe();
   }
 
   login(body: User): Observable<Login> {

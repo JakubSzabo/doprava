@@ -17,8 +17,8 @@
       placeholder="{{ 'ROUTE.form.distance' | translate }}"
     />
 
-    <button (click)="add()" class="button button-success p-2">
+    <p-button (click)="add()" [disabled]="checkRoute()">
       {{ 'CORE.confirm' | translate }}
-    </button>
+    </p-button>
   </div>
 </div>

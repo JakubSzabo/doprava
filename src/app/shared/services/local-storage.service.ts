@@ -10,11 +10,11 @@ export class LocalStorageService {
     return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
   }
 
-  getToken(): string {
+  getToken(): string | null {
     if (this.isLocalStorageAvailable()) {
-      return localStorage.getItem(this.TOKEN) ?? '';
+      return localStorage.getItem(this.TOKEN);
     }
-    return '';
+    return null;
   }
 
   saveToken(token: string): void {

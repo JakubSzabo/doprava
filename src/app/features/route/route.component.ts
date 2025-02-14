@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { EmployeeManagementComponent } from '../user/employee-management/employee-management.component';
+import { EmployeeManagementComponent } from '../employee/employee-management/employee-management.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Route } from '../../shared/modules/route';
 import { AddRouteComponent } from './add-route/add-route.component';
@@ -31,7 +31,7 @@ export class RouteComponent implements OnInit {
 
   searchTerm = '';
   first = 0;
-  rows = 50;
+  rows = 20;
   constructor(
     public dialog: MatDialog,
     public routeService: RouteService
@@ -45,7 +45,7 @@ export class RouteComponent implements OnInit {
     this.routeService.getAllRoute().subscribe((res) => {
       this.routes = res;
       this.filteredRoutes = res;
-      this.paginatedRoutes = res.slice(0, 50);
+      this.paginatedRoutes = res.slice(0, 20);
     });
   }
 

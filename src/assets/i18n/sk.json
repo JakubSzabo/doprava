@@ -8,8 +8,10 @@
     "error": "Chyba"
   },
   "NAV": {
-    "user": "Zamestnanec",
-    "route": "Trasy"
+    "phm": "PHM",
+    "employee": "Zamestnanec",
+    "route": "Trasy",
+    "logout": "Odhlásiť sa"
   },
   "LOGIN": {
     "error": "Zlé prihlasovacie meno alebo heslo",

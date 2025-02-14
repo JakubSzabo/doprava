@@ -3,11 +3,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Route } from '../../../shared/modules/route';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-add-route',
   standalone: true,
-  imports: [TranslateModule, FormsModule],
+  imports: [TranslateModule, FormsModule, Button],
   templateUrl: './add-route.component.html',
 })
 export class AddRouteComponent {
@@ -19,5 +20,9 @@ export class AddRouteComponent {
   add() {
     if (this.route.route == undefined || this.route.distance == undefined) return;
     this.dialogRef.close(this.route);
+  }
+
+  checkRoute() {
+    return !(this.route.distance > 0 && this.route.route.trim());
   }
 }

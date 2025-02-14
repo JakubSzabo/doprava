@@ -9,7 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 
 @Component({
-  selector: 'app-user-table',
+  selector: 'app-employee-table',
   templateUrl: './employee.component.html',
   standalone: true,
   imports: [TranslateModule, PaginatorModule, InputTextModule, TableModule],
@@ -22,7 +22,7 @@ export class UserTableComponent implements OnInit {
 
   searchTerm = '';
   first = 0;
-  rows = 50;
+  rows = 20;
 
   constructor(
     public dialog: MatDialog,
@@ -37,7 +37,7 @@ export class UserTableComponent implements OnInit {
     this.userService.getAllUsers().subscribe((res) => {
       this.employee = res;
       this.filteredEmployees = res;
-      this.paginatedEmployees = res.slice(0, 50);
+      this.paginatedEmployees = res.slice(0, 20);
       this.updatePaginatedUsers();
     });
   }
