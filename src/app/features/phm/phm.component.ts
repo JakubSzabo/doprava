@@ -8,12 +8,18 @@ import { StepperModule } from 'primeng/stepper';
 import { Button } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DatePipe } from '@angular/common';
-import { BusinessTrip } from '../../shared/modules/route';
+import { BusinessTrip, GeneratedRoutes } from '../../shared/modules/route';
 import { PhmService } from './phm.service';
 import { jsPDF } from 'jspdf';
 import { ROBOTO_FONT_BASE64 } from '../../../assets/fonts/roboto-font';
 import { ROBOTO_FONT_BOLD_BASE64 } from '../../../assets/fonts/roboto-font-bold';
 import autoTable from 'jspdf-autotable';
+import { AddRouteComponent } from '../route/add-route/add-route.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ShowRoutesDialogComponent } from './show-routes-dialog/show-routes-dialog.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { EmployeeService } from '../employee/employee.service';
+import { Employee } from '../../shared/modules/employee';
 
 @Component({
   selector: 'app-phm',
@@ -39,25 +45,23 @@ export class PhmComponent implements OnInit {
   from?: Date;
   to?: Date;
 
-  date?: Date;
-  quantity?: number;
+  date?: Date = new Date();
+  quantity?: number = 0;
   distance: number = 0;
-  price?: number;
+  price?: number = 0;
 
   paymentMethod: Select[] = [
     { name: this.translate.instant('PHM.card'), code: 'CARD' },
     { name: this.translate.instant('PHM.cash'), code: 'CASH' },
   ];
   selectedPayment?: Select;
-
-  businessTrip: BusinessTrip[] = [];
-  dateBusinessTrip?: Date;
-  routeBusinessTrip?: string;
-  distanceBusinessTrip?: number;
+  generatedRoutes: GeneratedRoutes[] = [];
 
   constructor(
     private phmService: PhmService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private employeeService: EmployeeService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -72,14 +76,6 @@ export class PhmComponent implements OnInit {
       price: this.price,
       quantity: this.quantity,
       paymentMethod: this.selectedPayment?.code,
-    });
-  }
-
-  addBusinessTrip() {
-    this.businessTrip.push({
-      date: this.dateBusinessTrip,
-      route: this.routeBusinessTrip,
-      distance: this.distanceBusinessTrip,
     });
   }
 
@@ -116,6 +112,82 @@ export class PhmComponent implements OnInit {
     );
   }
 
+  generateRoutesPreview() {
+    if (!this.from || !this.to || !this.distance) return;
+
+    this.phmService.getAllRoute().subscribe((routes) => {
+      const workDays: Date[] = [];
+      const current = new Date(this.from!);
+      const end = new Date(this.to!);
+
+      while (current <= end) {
+        const day = current.getDay();
+        if (day !== 0 && day !== 6) {
+          workDays.push(new Date(current));
+        }
+        current.setDate(current.getDate() + 1);
+      }
+
+      const average = Math.floor(this.distance / workDays.length);
+      let remaining = this.distance;
+
+      this.generatedRoutes = workDays.map((day) => {
+        const shuffled = routes.slice().sort(() => Math.random() - 0.5);
+        let selected =
+          shuffled.find((r) => r.distance <= remaining && r.distance >= average) ||
+          shuffled.find((r) => r.distance <= remaining) ||
+          shuffled[0];
+
+        const route = {
+          id: crypto.randomUUID(),
+          date: day,
+          name: selected.route,
+          distance: selected.distance,
+        };
+
+        remaining -= selected.distance;
+        return route;
+      });
+
+      let totalDistance = this.generatedRoutes.reduce((sum, r) => sum + r.distance, 0);
+
+      while (totalDistance > this.distance) {
+        let maxIndex = 0;
+        for (let i = 1; i < this.generatedRoutes.length; i++) {
+          if (this.generatedRoutes[i].distance > this.generatedRoutes[maxIndex].distance) {
+            maxIndex = i;
+          }
+        }
+
+        const currentLongest = this.generatedRoutes[maxIndex];
+
+        const shorterRoutes = routes.filter((r) => r.distance < currentLongest.distance);
+        if (shorterRoutes.length === 0) break;
+
+        const replacement = shorterRoutes[Math.floor(Math.random() * shorterRoutes.length)];
+
+        this.generatedRoutes[maxIndex] = {
+          ...currentLongest,
+          name: replacement.route,
+          distance: replacement.distance,
+        };
+
+        totalDistance = this.generatedRoutes.reduce((sum, r) => sum + r.distance, 0);
+      }
+
+      const dialogRef = this.dialog.open(ShowRoutesDialogComponent, {
+        data: this.generatedRoutes,
+      });
+
+      dialogRef.afterClosed().subscribe((result: GeneratedRoutes[]) => {
+        this.generatedRoutes = result;
+        if (result) {
+          this.generate();
+        }
+      });
+    });
+  }
+
   generate() {
     this.phmService.getUserById(this.selectedUser?.code ?? '').subscribe((user) => {
       const doc = new jsPDF('p', 'pt', 'a4');
@@ -126,22 +198,18 @@ export class PhmComponent implements OnInit {
 
       doc.setFont('Roboto', 'bold');
       doc.setFontSize(12);
-
       doc.text('Vinárkse závody Topoľčianky, s.r.o., Cintorínska 31, 951 93 Topoľčianky', 50, 50);
       doc.text('VYÚČTOVANIE SPOTREBY POHONNÝCH HMOT (benzín, nafta)', 50, 70);
 
       doc.setFont('Roboto', 'normal');
       doc.setFontSize(10);
-
       const driver = `Účtovateľ vozidla: ${this.selectedUser?.name}`;
       const city = `Stredisko: Topoľčianky`;
-
       doc.text(driver, 50, 110);
       doc.text(city, 330, 110);
 
       const vehicleType = `Typ vozidla: ${user.vehicleType}`;
       const licensePlate = `ŠPZ: ${user.licensePlate}`;
-
       doc.text(vehicleType, 50, 125);
       doc.text(licensePlate, 330, 125);
 
@@ -149,7 +217,6 @@ export class PhmComponent implements OnInit {
       const from = `${this.from?.getDate()}.${(this.from?.getMonth() ?? 0) + 1}.${this.from?.getFullYear()}`;
       const to = `${this.to?.getDate()}.${(this.to?.getMonth() ?? 0) + 1}.${this.to?.getFullYear()}`;
       const fromTo = `Vyúċtovanie spotreby za obdobie od: ${from}      do: ${to}`;
-
       doc.text(odometer, 50, 150);
       doc.text('Vlastníctvo vozidla: Firemné', 50, 165);
       doc.text(fromTo, 50, 180);
@@ -157,7 +224,6 @@ export class PhmComponent implements OnInit {
       doc.text(`1. Počiatočný stav tachometra:`, 100, 210);
       doc.text(`2. Konečný stav tachometra:`, 100, 225);
       doc.text(`3. Ubehnuté km za účtovné obdobie:`, 100, 240);
-
       doc.text(`${user.odometer}`, 320, 210);
       doc.text(`${Number(user.odometer) + Number(this.distance)}`, 320, 225);
       doc.text(`${this.distance}`, 320, 240);
@@ -183,7 +249,6 @@ export class PhmComponent implements OnInit {
       doc.text(`${user.tankStatus}`, 320, 350);
 
       doc.line(50, 355, 340, 355);
-
       doc.text('Spotreba za účtovné obdobie:', 50, 375);
       doc.text('Skutočná spotreba na 100km:', 50, 390);
       doc.text(`${Number(total.cash.quantity) + Number(total.card.quantity)}`, 320, 375);
@@ -241,132 +306,70 @@ export class PhmComponent implements OnInit {
       doc.text(`${to}`, 200, 800);
 
       doc.addPage();
-
       doc.setFont('Roboto', 'bold');
       doc.text('Záznamy o prevádzke vozidla', 50, 50);
-
       doc.setFont('Roboto', 'normal');
       doc.text(`Vodič: ${this.selectedUser?.name}`, 50, 70);
 
-      this.phmService.getAllRoute().subscribe((routes) => {
-        let currentDate = new Date(this.from!);
-        const endDate = new Date(this.to!);
-        const workDays: Date[] = [];
+      let odometerData = Number(user.odometer);
+      const tableRouteData: (string | number)[][] = [];
 
-        while (currentDate <= endDate) {
-          const day = currentDate.getDay();
-          if (day !== 0 && day !== 6) {
-            workDays.push(new Date(currentDate));
-          }
-          currentDate.setDate(currentDate.getDate() + 1);
+      this.generatedRoutes.forEach((route) => {
+        tableRouteData.push([
+          route.date.toLocaleDateString('sk-SK'),
+          route.name,
+          '08:00',
+          '16:00',
+          odometerData,
+          route.distance,
+        ]);
+
+        odometerData += route.distance;
+      });
+
+      const totalDistance = tableRouteData.reduce((sum, row) => sum + Number(row[5]), 0);
+
+      tableRouteData.push(['Spolu', '', '', '', '', totalDistance]);
+
+      autoTable(doc, {
+        startY: 85,
+        head: [['Dátum', 'Cieľ cesty', 'Odchod', 'Príchod', 'Stav počítadla km', 'Ubehnuté km']],
+        body: tableRouteData,
+        theme: 'grid',
+        styles: {
+          font: 'Roboto',
+          fontSize: 10,
+          textColor: [0, 0, 0],
+          lineWidth: 0.5,
+          lineColor: [0, 0, 0],
+        },
+        headStyles: {
+          fillColor: false,
+          textColor: [0, 0, 0],
+          lineWidth: 0.5,
+          lineColor: [0, 0, 0],
+        },
+        tableLineColor: [0, 0, 0],
+        tableLineWidth: 0.5,
+      });
+
+      doc.text('V Topoľčiankach, dňa: ', 50, 770);
+      doc.text(`${to}`, 200, 770);
+      doc.text('Podpis účtovnika: ................', 50, 800);
+
+      doc.save('vygenerovany-dokument.pdf');
+
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        data: odometerData,
+      });
+
+      dialogRef.afterClosed().subscribe((result: boolean) => {
+        if (result) {
+          const employee: Employee = {
+            odometer: odometerData,
+          };
+          this.employeeService.updateUser(this.selectedUser!.code, employee).subscribe();
         }
-
-        let remainingDistance = this.distance;
-        let odometer = Number(user.odometer);
-        const tableRouteData: (string | number)[][] = [];
-
-        let routeIndex = 0;
-
-        while (remainingDistance > 0 && workDays.length > 0) {
-          const travelDate = workDays.shift()!;
-          let selectedRoute = routes[routeIndex % routes.length];
-          routeIndex++;
-
-          if (selectedRoute.distance > remainingDistance) {
-            break;
-          }
-
-          tableRouteData.push([
-            travelDate.toLocaleDateString('sk-SK'),
-            selectedRoute.route,
-            '08:00',
-            '16:00',
-            odometer,
-            selectedRoute.distance,
-          ]);
-
-          odometer += Number(selectedRoute.distance);
-          remainingDistance -= selectedRoute.distance;
-        }
-
-        let totalDistance = tableRouteData.reduce((sum, row) => sum + Number(row[5]), 0);
-
-        if (totalDistance < this.distance) {
-          const missingDistance = this.distance - totalDistance;
-
-          const exactMatchRoute = routes.find((route) => route.distance === missingDistance);
-
-          if (exactMatchRoute) {
-            tableRouteData.pop();
-            tableRouteData.push([
-              workDays.length > 0 ? workDays.shift()!.toLocaleDateString('sk-SK') : 'N/A',
-              exactMatchRoute.route,
-              '08:00',
-              '16:00',
-              odometer,
-              exactMatchRoute.distance,
-            ]);
-            totalDistance = this.distance;
-          } else {
-            for (let i = 0; i < routes.length; i++) {
-              for (let j = 0; j < routes.length; j++) {
-                if (routes[i].distance + routes[j].distance === missingDistance) {
-                  tableRouteData.pop();
-                  tableRouteData.push([
-                    workDays.length > 0 ? workDays.shift()!.toLocaleDateString('sk-SK') : 'N/A',
-                    routes[i].route,
-                    '08:00',
-                    '16:00',
-                    odometer,
-                    routes[i].distance,
-                  ]);
-                  odometer += routes[i].distance;
-                  tableRouteData.push([
-                    workDays.length > 0 ? workDays.shift()!.toLocaleDateString('sk-SK') : 'N/A',
-                    routes[j].route,
-                    '08:00',
-                    '16:00',
-                    odometer,
-                    routes[j].distance,
-                  ]);
-                  totalDistance = this.distance;
-                  break;
-                }
-              }
-              if (totalDistance === this.distance) break;
-            }
-          }
-        }
-
-        tableRouteData.push(['Spolu', '', '', '', '', totalDistance]);
-
-        autoTable(doc, {
-          startY: 85,
-          head: [['Dátum', 'Cieľ cesty', 'Odchod', 'Príchod', 'Stav počítadla km', 'Ubehnuté km']],
-          body: tableRouteData,
-          theme: 'grid',
-          styles: {
-            font: 'Roboto',
-            fontSize: 10,
-            textColor: [0, 0, 0],
-            lineWidth: 0.5,
-            lineColor: [0, 0, 0],
-          },
-          headStyles: {
-            fillColor: false,
-            textColor: [0, 0, 0],
-            lineWidth: 0.5,
-            lineColor: [0, 0, 0],
-          },
-          tableLineColor: [0, 0, 0],
-          tableLineWidth: 0.5,
-        });
-
-        doc.text('V Topoľčiankach, dňa: ', 50, 770);
-        doc.text(`${to}`, 200, 770);
-        doc.text('Podpis účtovnika: ................', 50, 800);
-
-        doc.save('vygenerovany-dokument.pdf');
       });
     });
   }

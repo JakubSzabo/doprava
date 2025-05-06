@@ -2,6 +2,13 @@
   display: flex;
   justify-content: space-around;
 }
+tbody {
+  min-height: 20px !important;
+}
+
+.one-row {
+  max-height: 20px !important;
+}
 
 .next {
   margin-top: 1rem;

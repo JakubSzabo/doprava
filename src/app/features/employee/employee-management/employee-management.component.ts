@@ -1,23 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { Employee } from '../../../shared/modules/employee';
-import { UserTableComponent } from '../employee.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatInput } from '@angular/material/input';
 import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-employee-management',
   templateUrl: './employee-management.component.html',
-  imports: [
-    UserTableComponent,
-    FormsModule,
-    TranslateModule,
-    ReactiveFormsModule,
-    MatInput,
-    Button,
-  ],
+  imports: [FormsModule, TranslateModule, ReactiveFormsModule, Button],
   standalone: true,
 })
 export class EmployeeManagementComponent implements OnInit {
@@ -50,13 +41,13 @@ export class EmployeeManagementComponent implements OnInit {
 
   checkEmployee(): boolean {
     return !(
-      this.employee.firstName.trim() &&
-      this.employee.lastName.trim() &&
-      this.employee.vehicleType.trim() &&
-      this.employee.licensePlate.trim() &&
-      this.employee.consumption > 0 &&
-      this.employee.odometer >= 0 &&
-      this.employee.tankStatus >= 0
+      this.employee.firstName?.trim() &&
+      this.employee.lastName?.trim() &&
+      this.employee.vehicleType?.trim() &&
+      this.employee.licensePlate?.trim() &&
+      this.employee.consumption! > 0 &&
+      this.employee.odometer! >= 0 &&
+      this.employee.tankStatus! >= 0
     );
   }
 }

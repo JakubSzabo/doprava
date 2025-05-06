@@ -1,0 +1,11 @@
+<div class="container p-5">
+  <p>{{ 'PHM.changeData' | translate }} {{ data }}</p>
+  <div class="d-flex justify-content-end mt-5 mb-5">
+    <button class="button button-success mr-3" (click)="confirm(true)">
+      {{ 'CORE.confirm' | translate }}
+    </button>
+    <button class="button button-success" (click)="confirm(false)">
+      {{ 'CORE.cancel' | translate }}
+    </button>
+  </div>
+</div>

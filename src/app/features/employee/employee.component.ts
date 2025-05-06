@@ -48,8 +48,8 @@ export class UserTableComponent implements OnInit {
         (employee.firstName + ' ' + employee.lastName)
           .toLowerCase()
           .includes(this.searchTerm.toLowerCase()) ||
-        employee.vehicleType.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        employee.licensePlate.toLowerCase().includes(this.searchTerm.toLowerCase())
+        employee.vehicleType?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        employee.licensePlate?.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
 
     this.first = 0;

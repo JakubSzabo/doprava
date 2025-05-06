@@ -1,6 +1,7 @@
 {
   "CORE": {
     "confirm": "Potvrdiť",
+    "cancel": "Zrušiť",
     "from": "Od",
     "to": "Do",
     "next": "Ďalej",
@@ -56,6 +57,9 @@
   "PHM": {
     "title": "Pohonné hmoty",
     "user": "Užívatel",
+    "name": "Nazov",
+    "distance": "Vzdialenosť",
+    "employee": "Zamestnanec",
     "period": "Zučtovacie obdobie",
     "firstSection": "Užívatel a obdobie",
     "refueling": "Tankovania",
@@ -63,6 +67,7 @@
     "date": "Dátum",
     "quantity": "Natankonvané (L)",
     "price": "Cena (€)",
+    "sum": "Spolu",
     "payment_method": "Spôsob platby",
     "selectPayment": "Spôsob platby",
     "generate": "Generuj trasy",
@@ -70,6 +75,7 @@
     "CARD": "Karta",
     "cash": "Hotovosť",
     "CASH": "Hotovosť",
+    "changeData": "Zmeniť stav tachometru: ",
     "form": {
       "title": "Služobná ceta",
       "date": "Dátum",

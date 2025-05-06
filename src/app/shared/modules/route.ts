@@ -9,3 +9,10 @@ export interface BusinessTrip {
   route?: string;
   distance?: number;
 }
+
+export interface GeneratedRoutes {
+  id: string;
+  date: Date;
+  name: string;
+  distance: number;
+}

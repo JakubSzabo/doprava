@@ -63,7 +63,7 @@
                 </thead>
                 <tbody>
                   @for (refuel of refueling; track refuel) {
-                    <tr>
+                    <tr class="one-row">
                       <td>{{ refuel.date | date: 'dd.MM.yyyy' }}</td>
                       <td>{{ refuel.quantity }} L</td>
                       <td>{{ refuel.price }} €</td>
@@ -115,7 +115,7 @@
               label="{{ 'PHM.generate' | translate }}"
               icon="pi pi-calculator"
               [disabled]="!isGenerateEnabled()"
-              (onClick)="generate()"
+              (onClick)="generateRoutesPreview()"
             />
           </div>
         </ng-template>

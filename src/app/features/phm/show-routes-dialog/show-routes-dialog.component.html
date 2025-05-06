@@ -1,0 +1,41 @@
+<div class="container dialog">
+  <table>
+    <thead>
+    <tr>
+      <th>{{ 'PHM.date' | translate }}</th>
+      <th>{{ 'PHM.name' | translate }}</th>
+      <th>{{ 'PHM.distance' | translate }}</th>
+      <th>{{ 'ACTIONS' | translate }}</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (route of routes; track route.id) {
+        <tr class="one-row">
+          <td>{{ route.date | date: 'dd.MM.yyyy' }}</td>
+          <td>{{ route.name }}</td>
+          <td>
+            <input
+              type="number"
+              [value]="route.distance"
+              (input)="route.distance = $any($event.target).valueAsNumber"
+            />
+          </td>
+          <td class="b-icon">
+            <i class="pi pi-trash pl-3 cursor-pointer" (click)="delete(route.id)"></i>
+          </td>
+        </tr>
+      }
+    <tr class="one-row">
+      <td>{{ 'PHM.sum' | translate }}</td>
+      <td></td>
+      <td></td>
+      <td>{{ sum() }}</td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-end mt-5 mb-5">
+    <button class="button button-success" (click)="confirm()">
+      {{ 'CORE.confirm' | translate }}
+    </button>
+  </div>
+</div>
