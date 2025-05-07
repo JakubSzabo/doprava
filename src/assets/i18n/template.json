@@ -1,18 +1,38 @@
 {
   "CORE": {
-    "confirm": ""
+    "confirm": "",
+    "cancel": "",
+    "action": "",
+    "from": "",
+    "to": "",
+    "next": "",
+    "back": "",
+    "error": ""
   },
   "NAV": {
-    "user": ""
+    "phm": "",
+    "employee": "",
+    "route": "",
+    "admin": "",
+    "logout": ""
   },
-  "USER": {
-    "user": "",
+  "LOGIN": {
+    "error": "",
+    "form": {
+      "name": "",
+      "password": "",
+      "submit": ""
+    }
+  },
+  "EMPLOYEE": {
+    "title": "",
     "fullName": "",
     "vehicleType": "",
     "licensePlate": "",
     "consumption": "",
     "odometer": "",
     "tankStatus": "",
+    "search": "",
     "form": {
       "add": "",
       "edit": "",
@@ -25,6 +45,48 @@
       "consumption": "",
       "odometer": "",
       "tankStatus": ""
+    }
+  },
+  "ROUTE": {
+    "title": "",
+    "search": "",
+    "form": {
+      "add": "",
+      "route": "",
+      "distance": ""
+    }
+  },
+  "PHM": {
+    "title": "",
+    "user": "",
+    "name": "",
+    "distance": "",
+    "employee": "",
+    "period": "",
+    "firstSection": "",
+    "refueling": "",
+    "selectUser": "",
+    "date": "",
+    "quantity": "",
+    "price": "",
+    "sum": "",
+    "payment_method": "",
+    "selectPayment": "",
+    "generate": "",
+    "card": "",
+    "CARD": "",
+    "cash": "",
+    "CASH": "",
+    "changeData": "",
+    "necessaryKm": "",
+    "form": {
+      "title": "",
+      "date": "",
+      "quantity": "",
+      "price": "",
+      "distance": "",
+      "route": "",
+      "traveledDistance": ""
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { authGuard } from '../shared/guards/auth.guard';
+import { adminGuard, authGuard } from '../shared/guards/auth.guard';
 
 export default [
   {
@@ -16,5 +16,10 @@ export default [
     path: 'employee',
     loadChildren: () => import('./employee/employee.router'),
     canActivate: [authGuard],
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.router'),
+    canActivate: [adminGuard],
   },
 ] as Route[];

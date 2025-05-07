@@ -2,6 +2,7 @@
   "CORE": {
     "confirm": "Potvrdiť",
     "cancel": "Zrušiť",
+    "action": "Akcie",
     "from": "Od",
     "to": "Do",
     "next": "Ďalej",
@@ -12,6 +13,7 @@
     "phm": "PHM",
     "employee": "Zamestnanec",
     "route": "Trasy",
+    "admin": "Admin",
     "logout": "Odhlásiť sa"
   },
   "LOGIN": {
@@ -76,6 +78,7 @@
     "cash": "Hotovosť",
     "CASH": "Hotovosť",
     "changeData": "Zmeniť stav tachometru: ",
+    "necessaryKm": "Potrebné KM: ",
     "form": {
       "title": "Služobná ceta",
       "date": "Dátum",

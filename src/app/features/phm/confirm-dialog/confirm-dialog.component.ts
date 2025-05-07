@@ -7,7 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [TranslateModule],
   templateUrl: './confirm-dialog.component.html',
-  styleUrl: './confirm-dialog.component.scss',
 })
 export class ConfirmDialogComponent {
   constructor(
@@ -15,7 +14,7 @@ export class ConfirmDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  confirm(change: boolean) {
+  confirm(change: boolean): void {
     this.dialogRef.close(change);
   }
 }

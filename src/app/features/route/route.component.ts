@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { EmployeeManagementComponent } from '../employee/employee-management/employee-management.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Route } from '../../shared/modules/route';
 import { AddRouteComponent } from './add-route/add-route.component';
@@ -13,14 +12,7 @@ import { TableModule } from 'primeng/table';
 @Component({
   selector: 'app-route',
   standalone: true,
-  imports: [
-    TranslateModule,
-    EmployeeManagementComponent,
-    FormsModule,
-    InputTextModule,
-    PaginatorModule,
-    TableModule,
-  ],
+  imports: [TranslateModule, FormsModule, InputTextModule, PaginatorModule, TableModule],
   templateUrl: './route.component.html',
 })
 export class RouteComponent implements OnInit {

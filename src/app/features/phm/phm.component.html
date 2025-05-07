@@ -28,13 +28,14 @@
             </div>
           </div>
           <div class="next">
-            <p-button
-              label="{{ 'CORE.next' | translate }}"
-              icon="pi pi-arrow-right"
-              iconPos="right"
-              [disabled]="!isNextEnabled()"
-              (onClick)="nextCallback.emit()"
-            />
+            <button
+              class="button button-success"
+              [disabled]="isNextEnabled()"
+              (click)="nextCallback.emit()"
+            >
+              {{ 'CORE.next' | translate }}
+              <i class="pi pi-arrow-right pl-3"></i>
+            </button>
           </div>
         </ng-template>
       </p-stepperPanel>
@@ -46,9 +47,6 @@
           let-index="index"
         >
           <div class="flex flex-column h-12rem">
-            <label>{{ 'PHM.form.traveledDistance' | translate }}</label>
-            <input type="number" [(ngModel)]="distance" />
-
             <div
               class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium"
             >
@@ -98,25 +96,34 @@
                 </div>
 
                 <div class="d-flex justify-content-center">
-                  <p-button [disabled]="enabledRefueling()" (click)="addRefueling()">
+                  <button
+                    class="button button-success"
+                    [disabled]="enabledRefueling()"
+                    (click)="addRefueling()"
+                  >
                     {{ 'CORE.confirm' | translate }}
-                  </p-button>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
           <div class="back-next">
-            <p-button
-              label="{{ 'CORE.back' | translate }}"
-              icon="pi pi-arrow-left"
-              (onClick)="prevCallback.emit()"
-            />
-            <p-button
-              label="{{ 'PHM.generate' | translate }}"
-              icon="pi pi-calculator"
+            <button
+              class="button button-success"
+              (click)="prevCallback.emit()"
+            >
+              <i class="pi pi-arrow-left pl-3"></i>
+              {{ 'CORE.back' | translate }}
+            </button>
+
+            <button
+              class="button button-success"
               [disabled]="!isGenerateEnabled()"
-              (onClick)="generateRoutesPreview()"
-            />
+              (click)="generateRoutesPreview()"
+            >
+              <i class="pi pi-calculator pl-3"></i>
+              {{ 'PHM.generate' | translate }}
+            </button>
           </div>
         </ng-template>
       </p-stepperPanel>

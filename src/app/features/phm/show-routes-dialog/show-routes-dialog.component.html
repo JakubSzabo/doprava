@@ -1,15 +1,16 @@
 <div class="container dialog">
+  <h2>{{ 'PHM.necessaryKm' | translate }}{{ data.distance }}</h2>
   <table>
     <thead>
     <tr>
       <th>{{ 'PHM.date' | translate }}</th>
       <th>{{ 'PHM.name' | translate }}</th>
       <th>{{ 'PHM.distance' | translate }}</th>
-      <th>{{ 'ACTIONS' | translate }}</th>
+      <th>{{ 'CORE.action' | translate }}</th>
     </tr>
     </thead>
     <tbody>
-      @for (route of routes; track route.id) {
+      @for (route of data.routes; track route.id) {
         <tr class="one-row">
           <td>{{ route.date | date: 'dd.MM.yyyy' }}</td>
           <td>{{ route.name }}</td>
@@ -33,8 +34,13 @@
     </tr>
     </tbody>
   </table>
+  <h2>{{ 'PHM.necessaryKm' | translate }}{{ data.distance }}</h2>
+
   <div class="d-flex justify-content-end mt-5 mb-5">
-    <button class="button button-success" (click)="confirm()">
+    <button
+      class="button button-success"
+      (click)="confirm()"
+    >
       {{ 'CORE.confirm' | translate }}
     </button>
   </div>

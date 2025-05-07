@@ -20,9 +20,9 @@ export class UserTableComponent implements OnInit {
   filteredEmployees: Employee[] = [];
   paginatedEmployees: Employee[] = [];
 
-  searchTerm = '';
-  first = 0;
-  rows = 20;
+  searchTerm: string = '';
+  first: number = 0;
+  rows: number = 20;
 
   constructor(
     public dialog: MatDialog,
@@ -33,18 +33,48 @@ export class UserTableComponent implements OnInit {
     this.getAllUsers();
   }
 
-  private getAllUsers() {
-    this.userService.getAllUsers().subscribe((res) => {
-      this.employee = res;
-      this.filteredEmployees = res;
-      this.paginatedEmployees = res.slice(0, 20);
-      this.updatePaginatedUsers();
+  add(): void {
+    const dialogRef = this.dialog.open(EmployeeManagementComponent, {
+      data: {},
+      height: '80%',
+    });
+
+    dialogRef.afterClosed().subscribe((result: Employee): void => {
+      if (result) {
+        this.userService.createUser(result).subscribe((_: Employee) => {
+          this.getAllUsers();
+        });
+      }
     });
   }
 
-  filterUsers() {
+  edit(id: string): void {
+    this.userService.getUserById(id).subscribe((user: Employee): void => {
+      const dialogRef = this.dialog.open(EmployeeManagementComponent, {
+        data: { user: user },
+        height: '80%',
+      });
+
+      dialogRef.afterClosed().subscribe((result: Employee): void => {
+        if (result) {
+          this.userService.updateUser(id, result).subscribe((_: Employee): void => {
+            this.getAllUsers();
+          });
+        }
+      });
+    });
+  }
+
+  delete(id?: string): void {
+    if (!id) return;
+    this.userService.deleteUser(id).subscribe((_: Employee): void => {
+      this.getAllUsers();
+    });
+  }
+
+  filterUsers(): void {
     this.filteredEmployees = this.employee.filter(
-      (employee) =>
+      (employee: Employee): boolean | undefined =>
         (employee.firstName + ' ' + employee.lastName)
           .toLowerCase()
           .includes(this.searchTerm.toLowerCase()) ||
@@ -56,46 +86,16 @@ export class UserTableComponent implements OnInit {
     this.updatePaginatedUsers();
   }
 
-  updatePaginatedUsers() {
+  private getAllUsers(): void {
+    this.userService.getAllUsers().subscribe((res: Employee[]) => {
+      this.employee = res;
+      this.filteredEmployees = res;
+      this.paginatedEmployees = res.slice(0, 20);
+      this.updatePaginatedUsers();
+    });
+  }
+
+  private updatePaginatedUsers(): void {
     this.paginatedEmployees = this.filteredEmployees.slice(this.first, this.first + this.rows);
-  }
-
-  add(): void {
-    const dialogRef = this.dialog.open(EmployeeManagementComponent, {
-      data: {},
-      height: '80%',
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.userService.createUser(result).subscribe((res) => {
-          this.getAllUsers();
-        });
-      }
-    });
-  }
-
-  edit(id: string) {
-    this.userService.getUserById(id).subscribe((user) => {
-      const dialogRef = this.dialog.open(EmployeeManagementComponent, {
-        data: { user: user },
-        height: '80%',
-      });
-
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          this.userService.updateUser(id, result).subscribe((res) => {
-            this.getAllUsers();
-          });
-        }
-      });
-    });
-  }
-
-  delete(id?: string) {
-    if (!id) return;
-    this.userService.deleteUser(id).subscribe((_) => {
-      this.getAllUsers();
-    });
   }
 }

@@ -5,10 +5,16 @@
     </h2>
 
     <label>{{ 'EMPLOYEE.form.firstName' | translate }}</label>
-    <input [(ngModel)]="employee.firstName" placeholder="{{ 'EMPLOYEE.form.firstName' | translate }}" />
+    <input
+      [(ngModel)]="employee.firstName"
+      placeholder="{{ 'EMPLOYEE.form.firstName' | translate }}"
+    />
 
     <label>{{ 'EMPLOYEE.form.lastName' | translate }}</label>
-    <input [(ngModel)]="employee.lastName" placeholder="{{ 'EMPLOYEE.form.lastName' | translate }}" />
+    <input
+      [(ngModel)]="employee.lastName"
+      placeholder="{{ 'EMPLOYEE.form.lastName' | translate }}"
+    />
 
     <label>{{ 'EMPLOYEE.form.email' | translate }}</label>
     <input
@@ -18,7 +24,10 @@
     />
 
     <label>{{ 'EMPLOYEE.form.vehicleType' | translate }}</label>
-    <input [(ngModel)]="employee.vehicleType" placeholder="{{ 'EMPLOYEE.form.vehicleType' | translate }}" />
+    <input
+      [(ngModel)]="employee.vehicleType"
+      placeholder="{{ 'EMPLOYEE.form.vehicleType' | translate }}"
+    />
 
     <label>{{ 'EMPLOYEE.form.licensePlate' | translate }}</label>
     <input
@@ -47,8 +56,14 @@
       placeholder="{{ 'EMPLOYEE.form.tankStatus' | translate }}"
     />
 
-    <p-button (click)="add()" [disabled]="checkEmployee()">
-      {{ 'CORE.confirm' | translate }}
-    </p-button>
+    <div class="d-flex justify-content-end">
+      <button
+        class="button button-success"
+        (click)="add()"
+        [disabled]="checkEmployee()"
+      >
+        {{ 'CORE.confirm' | translate }}
+      </button>
+    </div>
   </div>
 </div>

@@ -9,28 +9,27 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [DatePipe, TranslateModule],
   templateUrl: './show-routes-dialog.component.html',
-  styleUrl: './show-routes-dialog.component.scss',
 })
 export class ShowRoutesDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ShowRoutesDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public routes: GeneratedRoutes[]
+    @Inject(MAT_DIALOG_DATA) public data: { routes: GeneratedRoutes[]; distance: number }
   ) {}
 
-  confirm() {
-    this.dialogRef.close(this.routes);
+  confirm(): void {
+    this.dialogRef.close(this.data.routes);
   }
 
-  delete(id: string) {
-    const index = this.routes.findIndex((e) => e.id === id);
+  delete(id: string): void {
+    const index = this.data.routes.findIndex((e: GeneratedRoutes) => e.id === id);
     if (index > -1) {
-      this.routes.splice(index, 1);
+      this.data.routes.splice(index, 1);
     }
   }
 
-  sum() {
+  sum(): number {
     let distance = 0;
-    this.routes.forEach((route: GeneratedRoutes) => {
+    this.data.routes.forEach((route: GeneratedRoutes): void => {
       distance += route.distance;
     });
 

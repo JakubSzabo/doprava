@@ -3,18 +3,17 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { Select } from '../../shared/modules/core';
-import { Refuel } from '../../shared/modules/refuel';
+import { PaymentDistanceAndQuantity, PaymentMethod, Refuel } from '../../shared/modules/refuel';
 import { StepperModule } from 'primeng/stepper';
 import { Button } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { DatePipe } from '@angular/common';
-import { BusinessTrip, GeneratedRoutes } from '../../shared/modules/route';
+import { GeneratedRoutes } from '../../shared/modules/route';
 import { PhmService } from './phm.service';
 import { jsPDF } from 'jspdf';
 import { ROBOTO_FONT_BASE64 } from '../../../assets/fonts/roboto-font';
 import { ROBOTO_FONT_BOLD_BASE64 } from '../../../assets/fonts/roboto-font-bold';
 import autoTable from 'jspdf-autotable';
-import { AddRouteComponent } from '../route/add-route/add-route.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ShowRoutesDialogComponent } from './show-routes-dialog/show-routes-dialog.component';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
@@ -46,9 +45,9 @@ export class PhmComponent implements OnInit {
   to?: Date;
 
   date?: Date = new Date();
-  quantity?: number = 0;
+  quantity?: number;
   distance: number = 0;
-  price?: number = 0;
+  price?: number;
 
   paymentMethod: Select[] = [
     { name: this.translate.instant('PHM.card'), code: 'CARD' },
@@ -70,7 +69,7 @@ export class PhmComponent implements OnInit {
     });
   }
 
-  addRefueling() {
+  addRefueling(): void {
     this.refueling.push({
       date: this.date,
       price: this.price,
@@ -79,116 +78,108 @@ export class PhmComponent implements OnInit {
     });
   }
 
-  private calculateTotals() {
-    const totals = {
-      card: { distance: 0, quantity: 0 },
-      cash: { distance: 0, quantity: 0 },
-    };
-
-    this.refueling.forEach((refuel) => {
-      if (refuel.paymentMethod === 'CARD') {
-        totals.card.distance += Number(refuel.price!);
-        totals.card.quantity += Number(refuel.quantity!);
-      } else if (refuel.paymentMethod === 'CASH') {
-        totals.cash.distance += Number(refuel.price!);
-        totals.cash.quantity += Number(refuel.quantity!);
-      }
-    });
-
-    return totals;
+  isNextEnabled(): boolean {
+    return !this.selectedUser || !this.from || !this.to;
   }
 
-  private countPaymentMethods(): { card: number; cash: number } {
-    return this.refueling.reduce(
-      (acc, refuel) => {
-        if (refuel.paymentMethod === 'CARD') {
-          acc.card += 1;
-        } else if (refuel.paymentMethod === 'CASH') {
-          acc.cash += 1;
-        }
-        return acc;
-      },
-      { card: 0, cash: 0 }
-    );
+  isGenerateEnabled(): boolean {
+    return this.refueling.length > 0;
   }
 
-  generateRoutesPreview() {
-    if (!this.from || !this.to || !this.distance) return;
+  enabledRefueling(): boolean {
+    return !this.date || !this.quantity || !this.price || !this.selectedPayment;
+  }
 
-    this.phmService.getAllRoute().subscribe((routes) => {
-      const workDays: Date[] = [];
-      const current = new Date(this.from!);
-      const end = new Date(this.to!);
+  generateRoutesPreview(): void {
+    this.phmService.getUserById(this.selectedUser!.code).subscribe((res: Employee) => {
+      const totalFuel = this.refueling.reduce((sum, r) => sum + (r.quantity ?? 0), 0);
+      const consumption = res.consumption ?? 0;
 
-      while (current <= end) {
-        const day = current.getDay();
-        if (day !== 0 && day !== 6) {
-          workDays.push(new Date(current));
-        }
-        current.setDate(current.getDate() + 1);
+      if (consumption > 0) {
+        this.distance = Math.round((totalFuel * 100) / consumption);
+      } else {
+        this.distance = 0;
       }
 
-      const average = Math.floor(this.distance / workDays.length);
-      let remaining = this.distance;
+      console.log('Prejdená vzdialenosť (km):', this.distance);
 
-      this.generatedRoutes = workDays.map((day) => {
-        const shuffled = routes.slice().sort(() => Math.random() - 0.5);
-        let selected =
-          shuffled.find((r) => r.distance <= remaining && r.distance >= average) ||
-          shuffled.find((r) => r.distance <= remaining) ||
-          shuffled[0];
+      if (!this.from || !this.to || !this.distance) return;
 
-        const route = {
-          id: crypto.randomUUID(),
-          date: day,
-          name: selected.route,
-          distance: selected.distance,
-        };
+      this.phmService.getAllRoute().subscribe((routes) => {
+        const workDays: Date[] = [];
+        const current = new Date(this.from!);
+        const end = new Date(this.to!);
 
-        remaining -= selected.distance;
-        return route;
-      });
-
-      let totalDistance = this.generatedRoutes.reduce((sum, r) => sum + r.distance, 0);
-
-      while (totalDistance > this.distance) {
-        let maxIndex = 0;
-        for (let i = 1; i < this.generatedRoutes.length; i++) {
-          if (this.generatedRoutes[i].distance > this.generatedRoutes[maxIndex].distance) {
-            maxIndex = i;
+        while (current <= end) {
+          const day = current.getDay();
+          if (day !== 0 && day !== 6) {
+            workDays.push(new Date(current));
           }
+          current.setDate(current.getDate() + 1);
         }
 
-        const currentLongest = this.generatedRoutes[maxIndex];
+        const average = Math.floor(this.distance / workDays.length);
+        let remaining = this.distance;
 
-        const shorterRoutes = routes.filter((r) => r.distance < currentLongest.distance);
-        if (shorterRoutes.length === 0) break;
+        this.generatedRoutes = workDays.map((day) => {
+          const shuffled = routes.slice().sort(() => Math.random() - 0.5);
+          let selected =
+            shuffled.find((r) => r.distance <= remaining && r.distance >= average) ||
+            shuffled.find((r) => r.distance <= remaining) ||
+            shuffled[0];
 
-        const replacement = shorterRoutes[Math.floor(Math.random() * shorterRoutes.length)];
+          const route = {
+            id: crypto.randomUUID(),
+            date: day,
+            name: selected.route,
+            distance: selected.distance,
+          };
 
-        this.generatedRoutes[maxIndex] = {
-          ...currentLongest,
-          name: replacement.route,
-          distance: replacement.distance,
-        };
+          remaining -= selected.distance;
+          return route;
+        });
 
-        totalDistance = this.generatedRoutes.reduce((sum, r) => sum + r.distance, 0);
-      }
+        let totalDistance = this.generatedRoutes.reduce((sum, r) => sum + r.distance, 0);
 
-      const dialogRef = this.dialog.open(ShowRoutesDialogComponent, {
-        data: this.generatedRoutes,
-      });
+        while (totalDistance > this.distance) {
+          let maxIndex = 0;
+          for (let i = 1; i < this.generatedRoutes.length; i++) {
+            if (this.generatedRoutes[i].distance > this.generatedRoutes[maxIndex].distance) {
+              maxIndex = i;
+            }
+          }
 
-      dialogRef.afterClosed().subscribe((result: GeneratedRoutes[]) => {
-        this.generatedRoutes = result;
-        if (result) {
-          this.generate();
+          const currentLongest = this.generatedRoutes[maxIndex];
+
+          const shorterRoutes = routes.filter((r) => r.distance < currentLongest.distance);
+          if (shorterRoutes.length === 0) break;
+
+          const replacement = shorterRoutes[Math.floor(Math.random() * shorterRoutes.length)];
+
+          this.generatedRoutes[maxIndex] = {
+            ...currentLongest,
+            name: replacement.route,
+            distance: replacement.distance,
+          };
+
+          totalDistance = this.generatedRoutes.reduce((sum, r) => sum + r.distance, 0);
         }
+
+        const dialogRef = this.dialog.open(ShowRoutesDialogComponent, {
+          data: { routes: this.generatedRoutes, distance: this.distance },
+        });
+
+        dialogRef.afterClosed().subscribe((result: GeneratedRoutes[]) => {
+          this.generatedRoutes = result;
+          if (result) {
+            this.generate();
+          }
+        });
       });
     });
   }
 
-  generate() {
+  private generate(): void {
     this.phmService.getUserById(this.selectedUser?.code ?? '').subscribe((user) => {
       const doc = new jsPDF('p', 'pt', 'a4');
       doc.addFileToVFS('Roboto.ttf', ROBOTO_FONT_BASE64);
@@ -374,15 +365,36 @@ export class PhmComponent implements OnInit {
     });
   }
 
-  isNextEnabled() {
-    return this.selectedUser && this.from && this.to;
+  private countPaymentMethods(): PaymentMethod {
+    return this.refueling.reduce(
+      (acc: PaymentMethod, refuel: Refuel): PaymentMethod => {
+        if (refuel.paymentMethod === 'CARD') {
+          acc.card += 1;
+        } else if (refuel.paymentMethod === 'CASH') {
+          acc.cash += 1;
+        }
+        return acc;
+      },
+      { card: 0, cash: 0 }
+    );
   }
 
-  isGenerateEnabled() {
-    return this.distance > 0 && this.refueling.length > 0;
-  }
+  private calculateTotals(): PaymentDistanceAndQuantity {
+    const totals = {
+      card: { distance: 0, quantity: 0 },
+      cash: { distance: 0, quantity: 0 },
+    };
 
-  enabledRefueling() {
-    return !this.date || !this.quantity || !this.price || !this.selectedPayment;
+    this.refueling.forEach((refuel: Refuel): void => {
+      if (refuel.paymentMethod === 'CARD') {
+        totals.card.distance += Number(refuel.price!);
+        totals.card.quantity += Number(refuel.quantity!);
+      } else if (refuel.paymentMethod === 'CASH') {
+        totals.cash.distance += Number(refuel.price!);
+        totals.cash.quantity += Number(refuel.quantity!);
+      }
+    });
+
+    return totals;
   }
 }

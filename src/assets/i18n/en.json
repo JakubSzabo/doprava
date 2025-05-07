@@ -1,0 +1,92 @@
+{
+  "CORE": {
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "action": "Actions",
+    "from": "From",
+    "to": "To",
+    "next": "Next",
+    "back": "Back",
+    "error": "Error"
+  },
+  "NAV": {
+    "phm": "Fuel",
+    "employee": "Employee",
+    "route": "Routes",
+    "admin": "Admin",
+    "logout": "Log out"
+  },
+  "LOGIN": {
+    "error": "Incorrect username or password",
+    "form": {
+      "name": "Username",
+      "password": "Password",
+      "submit": "Log in"
+    }
+  },
+  "EMPLOYEE": {
+    "title": "Employee",
+    "fullName": "Full name",
+    "vehicleType": "Vehicle type",
+    "licensePlate": "License plate",
+    "consumption": "Consumption",
+    "odometer": "Odometer",
+    "tankStatus": "Tank status",
+    "search": "Search by name",
+    "form": {
+      "add": "New Employee",
+      "edit": "Employee",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "vehicleType": "Vehicle type",
+      "licensePlate": "License plate",
+      "consumption": "Consumption",
+      "odometer": "Odometer",
+      "tankStatus": "Tank status"
+    }
+  },
+  "ROUTE": {
+    "title": "Routes",
+    "search": "Search",
+    "form": {
+      "add": "Add route",
+      "route": "Route",
+      "distance": "Distance"
+    }
+  },
+  "PHM": {
+    "title": "Fuel",
+    "user": "User",
+    "name": "Name",
+    "distance": "Distance",
+    "employee": "Employee",
+    "period": "Billing period",
+    "firstSection": "User and period",
+    "refueling": "Refuelings",
+    "selectUser": "Select user",
+    "date": "Date",
+    "quantity": "Refueled (L)",
+    "price": "Price (€)",
+    "sum": "Total",
+    "payment_method": "Payment method",
+    "selectPayment": "Select payment method",
+    "generate": "Generate routes",
+    "card": "Card",
+    "CARD": "Card",
+    "cash": "Cash",
+    "CASH": "Cash",
+    "changeData": "Change odometer state:",
+    "necessaryKm": "Required KM:",
+    "form": {
+      "title": "Business trip",
+      "date": "Date",
+      "quantity": "Quantity (L)",
+      "price": "Price (€)",
+      "distance": "Distance (Km)",
+      "route": "Route",
+      "traveledDistance": "Traveled distance"
+    }
+  }
+}

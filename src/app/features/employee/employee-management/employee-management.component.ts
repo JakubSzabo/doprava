@@ -3,12 +3,11 @@ import { Employee } from '../../../shared/modules/employee';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-employee-management',
   templateUrl: './employee-management.component.html',
-  imports: [FormsModule, TranslateModule, ReactiveFormsModule, Button],
+  imports: [FormsModule, TranslateModule, ReactiveFormsModule],
   standalone: true,
 })
 export class EmployeeManagementComponent implements OnInit {
@@ -35,7 +34,7 @@ export class EmployeeManagementComponent implements OnInit {
     }
   }
 
-  add() {
+  add(): void {
     this.dialogRef.close(this.employee);
   }
 
